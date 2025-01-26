@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "../styles/FlipClock.css";
 
 const FlipClock = () => {
   // Target date: 7th February 2025
-  const targetDate = new Date("2025-02-07T00:00:00");
+  const targetDate = new Date("2025-02-07T00:00:00"); // to change date you just need to change the time here
 
   const getTimeSegmentElements = (segmentElement) => {
     const segmentDisplay = segmentElement.querySelector(".segment-display");
@@ -96,28 +96,20 @@ const FlipClock = () => {
     };
   };
 
-  const calculatePercentageElapsed = () => {
-    const now = Date.now();
-    const totalDuration = targetDate.getTime() - now;
-    const elapsedDuration = totalDuration - getTimeRemaining(targetDate).days * 86400 * 1000;
-    return Math.max(0, Math.min((elapsedDuration / totalDuration) * 100, 100));
-  };
-
   const updateAllSegments = () => {
-    const timeRemainingBits = getTimeRemaining(targetDate.getTime());
+    const timeRemainingBits = getTimeRemaining(new Date(targetDate).getTime());
+
     updateTimeSection("days", timeRemainingBits.days);
     updateTimeSection("hours", timeRemainingBits.hours);
     updateTimeSection("minutes", timeRemainingBits.minutes);
     updateTimeSection("seconds", timeRemainingBits.seconds);
+
     return timeRemainingBits.complete;
   };
-
-  const [progress, setProgress] = useState(calculatePercentageElapsed());
 
   useEffect(() => {
     const countdownTimer = setInterval(() => {
       const isComplete = updateAllSegments();
-      setProgress(calculatePercentageElapsed());
 
       if (isComplete) {
         clearInterval(countdownTimer);
@@ -127,120 +119,112 @@ const FlipClock = () => {
     updateAllSegments();
 
     return () => clearInterval(countdownTimer);
-  }, []);
+  }, [targetDate]);
 
   return (
-    <div className="countdown-container">
-      {/* Loading Bar */}
-      <div className="loading-bar">
-        <div className="loading-progress" style={{ width: `${progress}%` }}></div>
+    <div className="countdown">
+      <div className="time-section" id="days">
+        <div className="time-group">
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>Days</p>
       </div>
 
-      {/* Countdown Timer */}
-      <div className="countdown">
-        <div className="time-section" id="days">
-          <div className="time-group">
-            <div className="time-segment">
-              <div className="segment-display">
-                <div className="segment-display__top"></div>
-                <div className="segment-display__bottom"></div>
-                <div className="segment-overlay">
-                  <div className="segment-overlay__top"></div>
-                  <div className="segment-overlay__bottom"></div>
-                </div>
-              </div>
-            </div>
-            <div className="time-segment">
-              <div className="segment-display">
-                <div className="segment-display__top"></div>
-                <div className="segment-display__bottom"></div>
-                <div className="segment-overlay">
-                  <div className="segment-overlay__top"></div>
-                  <div className="segment-overlay__bottom"></div>
-                </div>
+      <div className="time-section" id="hours">
+        <div className="time-group">
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
               </div>
             </div>
           </div>
-          <p>Days</p>
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
         </div>
+        <p>Hours</p>
+      </div>
 
-        <div className="time-section" id="hours">
-          <div className="time-group">
-            <div className="time-segment">
-              <div className="segment-display">
-                <div className="segment-display__top"></div>
-                <div className="segment-display__bottom"></div>
-                <div className="segment-overlay">
-                  <div className="segment-overlay__top"></div>
-                  <div className="segment-overlay__bottom"></div>
-                </div>
-              </div>
-            </div>
-            <div className="time-segment">
-              <div className="segment-display">
-                <div className="segment-display__top"></div>
-                <div className="segment-display__bottom"></div>
-                <div className="segment-overlay">
-                  <div className="segment-overlay__top"></div>
-                  <div className="segment-overlay__bottom"></div>
-                </div>
+      <div className="time-section" id="minutes">
+        <div className="time-group">
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
               </div>
             </div>
           </div>
-          <p>Hours</p>
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
         </div>
+        <p>Minutes</p>
+      </div>
 
-        <div className="time-section" id="minutes">
-          <div className="time-group">
-            <div className="time-segment">
-              <div className="segment-display">
-                <div className="segment-display__top"></div>
-                <div className="segment-display__bottom"></div>
-                <div className="segment-overlay">
-                  <div className="segment-overlay__top"></div>
-                  <div className="segment-overlay__bottom"></div>
-                </div>
-              </div>
-            </div>
-            <div className="time-segment">
-              <div className="segment-display">
-                <div className="segment-display__top"></div>
-                <div className="segment-display__bottom"></div>
-                <div className="segment-overlay">
-                  <div className="segment-overlay__top"></div>
-                  <div className="segment-overlay__bottom"></div>
-                </div>
+      <div className="time-section" id="seconds">
+        <div className="time-group">
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
               </div>
             </div>
           </div>
-          <p>Minutes</p>
-        </div>
-
-        <div className="time-section" id="seconds">
-          <div className="time-group">
-            <div className="time-segment">
-              <div className="segment-display">
-                <div className="segment-display__top"></div>
-                <div className="segment-display__bottom"></div>
-                <div className="segment-overlay">
-                  <div className="segment-overlay__top"></div>
-                  <div className="segment-overlay__bottom"></div>
-                </div>
-              </div>
-            </div>
-            <div className="time-segment">
-              <div className="segment-display">
-                <div className="segment-display__top"></div>
-                <div className="segment-display__bottom"></div>
-                <div className="segment-overlay">
-                  <div className="segment-overlay__top"></div>
-                  <div className="segment-overlay__bottom"></div>
-                </div>
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
               </div>
             </div>
           </div>
-          <p>Seconds</p>
         </div>
+        <p>Seconds</p>
       </div>
     </div>
   );
