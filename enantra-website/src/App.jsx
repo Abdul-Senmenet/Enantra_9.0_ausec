@@ -1,5 +1,5 @@
 import React from "react";
-import FlipClock from "./flipClock";
+import FlipClock from "./components/flipClock";
 // import "./App.css"; // Optional: Use this if you want specific app-wide styles
 
 const App = () => {
@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <div className="app">
-      <h1 className="title">React Flip Clock Countdown</h1>
+      <h1 className="title"> Countdown till Enantra</h1>
       <FlipClock targetDate={targetDate} />
     </div>
   );

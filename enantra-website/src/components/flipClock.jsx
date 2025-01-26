@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react';
-import "./FlipClock.css";
+import React, { useEffect } from "react";
+import "../styles/FlipClock.css";
 
-const FlipClock = ({ targetDate }) => {
+const FlipClock = () => {
+  // Target date: 7th February 2025
+  const targetDate = new Date("2025-02-07T00:00:00"); // to change date you just need to change the time here
+
   const getTimeSegmentElements = (segmentElement) => {
-    const segmentDisplay = segmentElement.querySelector('.segment-display');
-    const segmentDisplayTop = segmentDisplay.querySelector('.segment-display__top');
-    const segmentDisplayBottom = segmentDisplay.querySelector('.segment-display__bottom');
+    const segmentDisplay = segmentElement.querySelector(".segment-display");
+    const segmentDisplayTop = segmentDisplay.querySelector(".segment-display__top");
+    const segmentDisplayBottom = segmentDisplay.querySelector(".segment-display__bottom");
 
-    const segmentOverlay = segmentDisplay.querySelector('.segment-overlay');
-    const segmentOverlayTop = segmentOverlay.querySelector('.segment-overlay__top');
-    const segmentOverlayBottom = segmentOverlay.querySelector('.segment-overlay__bottom');
+    const segmentOverlay = segmentDisplay.querySelector(".segment-overlay");
+    const segmentOverlayTop = segmentOverlay.querySelector(".segment-overlay__top");
+    const segmentOverlayBottom = segmentOverlay.querySelector(".segment-overlay__bottom");
 
     return {
       segmentDisplayTop,
@@ -32,7 +35,7 @@ const FlipClock = ({ targetDate }) => {
       return;
     }
 
-    segmentElements.segmentOverlay.classList.add('flip');
+    segmentElements.segmentOverlay.classList.add("flip");
 
     updateSegmentValues(
       segmentElements.segmentDisplayTop,
@@ -41,24 +44,24 @@ const FlipClock = ({ targetDate }) => {
     );
 
     const finishAnimation = () => {
-      segmentElements.segmentOverlay.classList.remove('flip');
+      segmentElements.segmentOverlay.classList.remove("flip");
       updateSegmentValues(
         segmentElements.segmentDisplayBottom,
         segmentElements.segmentOverlayTop,
         timeValue
       );
 
-      segmentElements.segmentOverlay.removeEventListener('animationend', finishAnimation);
+      segmentElements.segmentOverlay.removeEventListener("animationend", finishAnimation);
     };
 
-    segmentElements.segmentOverlay.addEventListener('animationend', finishAnimation);
+    segmentElements.segmentOverlay.addEventListener("animationend", finishAnimation);
   };
 
   const updateTimeSection = (sectionID, timeValue) => {
     const firstNumber = Math.floor(timeValue / 10) || 0;
     const secondNumber = timeValue % 10 || 0;
     const sectionElement = document.getElementById(sectionID);
-    const timeSegments = sectionElement.querySelectorAll('.time-segment');
+    const timeSegments = sectionElement.querySelectorAll(".time-segment");
 
     updateTimeSegment(timeSegments[0], firstNumber);
     updateTimeSegment(timeSegments[1], secondNumber);
@@ -71,31 +74,35 @@ const FlipClock = ({ targetDate }) => {
     if (complete) {
       return {
         complete,
-        seconds: 0,
-        minutes: 0,
+        days: 0,
         hours: 0,
+        minutes: 0,
+        seconds: 0,
       };
     }
 
     const secondsRemaining = Math.floor((targetDateTime - nowTime) / 1000);
-    const hours = Math.floor(secondsRemaining / 60 / 60);
-    const minutes = Math.floor(secondsRemaining / 60) - hours * 60;
-    const seconds = secondsRemaining % 60;
+    const days = Math.floor(secondsRemaining / 86400); // 86400 = seconds in a day
+    const hours = Math.floor((secondsRemaining % 86400) / 3600); // Remaining hours
+    const minutes = Math.floor((secondsRemaining % 3600) / 60); // Remaining minutes
+    const seconds = secondsRemaining % 60; // Remaining seconds
 
     return {
       complete,
-      seconds,
-      minutes,
+      days,
       hours,
+      minutes,
+      seconds,
     };
   };
 
   const updateAllSegments = () => {
     const timeRemainingBits = getTimeRemaining(new Date(targetDate).getTime());
 
-    updateTimeSection('seconds', timeRemainingBits.seconds);
-    updateTimeSection('minutes', timeRemainingBits.minutes);
-    updateTimeSection('hours', timeRemainingBits.hours);
+    updateTimeSection("days", timeRemainingBits.days);
+    updateTimeSection("hours", timeRemainingBits.hours);
+    updateTimeSection("minutes", timeRemainingBits.minutes);
+    updateTimeSection("seconds", timeRemainingBits.seconds);
 
     return timeRemainingBits.complete;
   };
@@ -116,6 +123,32 @@ const FlipClock = ({ targetDate }) => {
 
   return (
     <div className="countdown">
+      <div className="time-section" id="days">
+        <div className="time-group">
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>Days</p>
+      </div>
+
       <div className="time-section" id="hours">
         <div className="time-group">
           <div className="time-segment">
