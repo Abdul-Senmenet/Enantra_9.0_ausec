@@ -1,60 +1,198 @@
-// FlipClock.jsx
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect } from 'react';
+import "./FlipClock.css";
 
 const FlipClock = ({ targetDate }) => {
-  const calculateTimeLeft = () => {
-    const difference = targetDate - new Date();
-    let timeLeft = {};
+  const getTimeSegmentElements = (segmentElement) => {
+    const segmentDisplay = segmentElement.querySelector('.segment-display');
+    const segmentDisplayTop = segmentDisplay.querySelector('.segment-display__top');
+    const segmentDisplayBottom = segmentDisplay.querySelector('.segment-display__bottom');
 
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    } else {
-      timeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    const segmentOverlay = segmentDisplay.querySelector('.segment-overlay');
+    const segmentOverlayTop = segmentOverlay.querySelector('.segment-overlay__top');
+    const segmentOverlayBottom = segmentOverlay.querySelector('.segment-overlay__bottom');
+
+    return {
+      segmentDisplayTop,
+      segmentDisplayBottom,
+      segmentOverlay,
+      segmentOverlayTop,
+      segmentOverlayBottom,
+    };
+  };
+
+  const updateSegmentValues = (displayElement, overlayElement, value) => {
+    displayElement.textContent = value;
+    overlayElement.textContent = value;
+  };
+
+  const updateTimeSegment = (segmentElement, timeValue) => {
+    const segmentElements = getTimeSegmentElements(segmentElement);
+
+    if (parseInt(segmentElements.segmentDisplayTop.textContent, 10) === timeValue) {
+      return;
     }
 
-    return timeLeft;
+    segmentElements.segmentOverlay.classList.add('flip');
+
+    updateSegmentValues(
+      segmentElements.segmentDisplayTop,
+      segmentElements.segmentOverlayBottom,
+      timeValue
+    );
+
+    const finishAnimation = () => {
+      segmentElements.segmentOverlay.classList.remove('flip');
+      updateSegmentValues(
+        segmentElements.segmentDisplayBottom,
+        segmentElements.segmentOverlayTop,
+        timeValue
+      );
+
+      segmentElements.segmentOverlay.removeEventListener('animationend', finishAnimation);
+    };
+
+    segmentElements.segmentOverlay.addEventListener('animationend', finishAnimation);
   };
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const updateTimeSection = (sectionID, timeValue) => {
+    const firstNumber = Math.floor(timeValue / 10) || 0;
+    const secondNumber = timeValue % 10 || 0;
+    const sectionElement = document.getElementById(sectionID);
+    const timeSegments = sectionElement.querySelectorAll('.time-segment');
+
+    updateTimeSegment(timeSegments[0], firstNumber);
+    updateTimeSegment(timeSegments[1], secondNumber);
+  };
+
+  const getTimeRemaining = (targetDateTime) => {
+    const nowTime = Date.now();
+    const complete = nowTime >= targetDateTime;
+
+    if (complete) {
+      return {
+        complete,
+        seconds: 0,
+        minutes: 0,
+        hours: 0,
+      };
+    }
+
+    const secondsRemaining = Math.floor((targetDateTime - nowTime) / 1000);
+    const hours = Math.floor(secondsRemaining / 60 / 60);
+    const minutes = Math.floor(secondsRemaining / 60) - hours * 60;
+    const seconds = secondsRemaining % 60;
+
+    return {
+      complete,
+      seconds,
+      minutes,
+      hours,
+    };
+  };
+
+  const updateAllSegments = () => {
+    const timeRemainingBits = getTimeRemaining(new Date(targetDate).getTime());
+
+    updateTimeSection('seconds', timeRemainingBits.seconds);
+    updateTimeSection('minutes', timeRemainingBits.minutes);
+    updateTimeSection('hours', timeRemainingBits.hours);
+
+    return timeRemainingBits.complete;
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
+    const countdownTimer = setInterval(() => {
+      const isComplete = updateAllSegments();
+
+      if (isComplete) {
+        clearInterval(countdownTimer);
+      }
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+    updateAllSegments();
 
-  const FlipUnit = ({ value, label }) => {
-    return (
-      <div className="flex flex-col items-center">
-        <motion.div
-          className="bg-gray-800 text-white text-3xl font-bold w-16 h-20 flex justify-center items-center rounded-xl shadow-lg"
-          key={value}
-          initial={{ rotateX: -90 }}
-          animate={{ rotateX: 0 }}
-          exit={{ rotateX: 90 }}
-          transition={{ duration: 0.5 }}
-        >
-          {value.toString().padStart(2, '0')}
-        </motion.div>
-        <div className="text-gray-500 text-sm mt-1">{label}</div>
-      </div>
-    );
-  };
+    return () => clearInterval(countdownTimer);
+  }, [targetDate]);
 
   return (
-    <div className="flex space-x-4">
-      <FlipUnit value={timeLeft.days} label="Days" />
-      <FlipUnit value={timeLeft.hours} label="Hours" />
-      <FlipUnit value={timeLeft.minutes} label="Minutes" />
-      <FlipUnit value={timeLeft.seconds} label="Seconds" />
+    <div className="countdown">
+      <div className="time-section" id="hours">
+        <div className="time-group">
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>Hours</p>
+      </div>
+
+      <div className="time-section" id="minutes">
+        <div className="time-group">
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>Minutes</p>
+      </div>
+
+      <div className="time-section" id="seconds">
+        <div className="time-group">
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
+          <div className="time-segment">
+            <div className="segment-display">
+              <div className="segment-display__top"></div>
+              <div className="segment-display__bottom"></div>
+              <div className="segment-overlay">
+                <div className="segment-overlay__top"></div>
+                <div className="segment-overlay__bottom"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>Seconds</p>
+      </div>
     </div>
   );
 };
