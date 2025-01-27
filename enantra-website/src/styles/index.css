@@ -22,7 +22,16 @@
     color: #fff;
   }
   
-  .app {
-    text-align: center;
-  }
-  
+  .app .text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust as needed */
+}
+
+.slides {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust as needed */
+}
