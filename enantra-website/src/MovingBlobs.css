@@ -1,0 +1,124 @@
+/* src/MovingBlobs.css */
+
+/* General body styles */
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: rgb(93, 65, 106); /* Dark background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Blob container */
+  .blob-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  /* Blob styles */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.8;
+    animation: move-smooth 10s infinite cubic-bezier(0.25, 1, 0.5, 1), float 15s infinite ease-in-out alternate;
+  }
+  
+  /* Blobs with custom RGB colors */
+  .blob:nth-child(1) {
+    width: 150px;
+    height: 150px;
+    top: 5%;
+    left: 10%;
+    background:  rgb(247, 169, 113); /* Dark purple */
+  }
+  .blob:nth-child(2) {
+    width: 250px;
+    height: 250px;
+    top: 40%;
+    left: 70%;
+    background: rgb(118, 78, 113); /* Purple-pink */
+    animation-delay: 2s;
+  }
+  .blob:nth-child(3) {
+    width: 300px;
+    height: 300px;
+    top: 15%;
+    left: 50%;
+    background: rgb(170, 113, 128); /* Light pink */
+    animation-delay: 4s;
+  }
+  .blob:nth-child(4) {
+    width: 200px;
+    height: 200px;
+    top: 75%;
+    left: 20%;
+    background: rgb(222, 143, 77); /* Soft orange */
+    animation-delay: 6s;
+  }
+  .blob:nth-child(5) {
+    width: 400px;
+    height: 400px;
+    top: 60%;
+    left: 5%;
+    background: rgb(243, 156, 89); /* Orange */
+    animation-delay: 8s;
+  }
+  .blob:nth-child(6) {
+    width: 180px;
+    height: 180px;
+    top: 2%;
+    left: 85%;
+    background: rgb(244, 180, 129); /* Deep orange */
+    animation-delay: 10s;
+  }
+  
+  /* Grain effect */
+  .grain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image: url('https://www.transparenttextures.com/patterns/asfalt-light.png'); /* Replace with a noise texture */
+    opacity: 0.1;
+    z-index: 10;
+  }
+  
+  /* Keyframes for smoother and faster movement */
+  @keyframes move-smooth {
+    0% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(100px, -60px);
+    }
+    50% {
+      transform: translate(-120px, 100px);
+    }
+    75% {
+      transform: translate(80px, -90px);
+    }
+    100% {
+      transform: translate(-90px, 60px);
+    }
+  }
+  
+  /* Keyframes for float effect */
+  @keyframes float {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.3);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  

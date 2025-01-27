@@ -4,6 +4,8 @@ import Test from "./test";
 import SlidingCard from "./SlidingCard";
 import Aizen from './assets/aizen.jpg';
 import Erwin from './assets/erwin.jpg';
+import BlobAnimation from "./BlobAnimation";
+// import MovingBlobs from "./MovingBlobs";
 // import "./App.css"; // Optional: Use this if you want specific app-wide styles
 
 const App = () => {
@@ -21,14 +23,11 @@ const App = () => {
 
   return (
     <div>
-        <div className="text">
+        <BlobAnimation>
             <Test />
-        </div>
-        <div className="app">
             <FlipClock targetDate={targetDate} />
-        </div>
-        <SlidingCard slides={slides} />
-        
+            <SlidingCard slides={slides} />
+        </BlobAnimation>      
     </div>
   );
 };
