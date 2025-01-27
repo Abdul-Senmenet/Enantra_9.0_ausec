@@ -5,8 +5,7 @@ import SlidingCard from "./SlidingCard";
 import Aizen from './assets/aizen.jpg';
 import Erwin from './assets/erwin.jpg';
 import BlobAnimation from "./BlobAnimation";
-// import MovingBlobs from "./MovingBlobs";
-// import "./App.css"; // Optional: Use this if you want specific app-wide styles
+import MouseTracker from "./MouseTracker";
 
 const App = () => {
   // Set the target date (5 hours from now as an example)
@@ -24,6 +23,7 @@ const App = () => {
   return (
     <div>
         <BlobAnimation>
+            <MouseTracker />
             <Test />
             <FlipClock targetDate={targetDate} />
             <SlidingCard slides={slides} />

@@ -1,0 +1,14 @@
+svg {
+    width: 100px;
+    pointer-events: none;
+    transition: top 0.1s, left 0.1s;
+    z-index: 2;
+  }
+  
+  text {
+    font-size: 4em;
+    font-family: 'Poppins';
+    font-weight: bold;
+    fill: rgb(138, 175, 255);
+  }
+  

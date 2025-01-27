@@ -1,7 +1,7 @@
 h1 {
     color: white;
-    font-family: 'Sixtyfour Convergence';
-    font-size: 100px;
+    font-family: 'Leckerli One';
+    font-size: 190px;
     text-align: center;
     margin-bottom: 20px;
     margin-top: 100px;
@@ -25,7 +25,7 @@ h1 {
   }
   
 .text-flicker-in-glow {
-	animation: text-flicker-in-glow 4s linear infinite both;
+	animation: text-flicker-in-glow 1s linear both;
 }
 
 @keyframes text-flicker-in-glow {
