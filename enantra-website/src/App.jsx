@@ -27,9 +27,8 @@ const App = () => {
         <div className="app">
             <FlipClock targetDate={targetDate} />
         </div>
-        <div className="slides">
-            <SlidingCard slides={slides} />
-        </div>
+        <SlidingCard slides={slides} />
+        
     </div>
   );
 };
