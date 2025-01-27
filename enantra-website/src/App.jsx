@@ -14,7 +14,6 @@ const App = () => {
             <Test />
         </div>
         <div className="app">
-            <h1 className="title"> Countdown till Enantra</h1>
             <FlipClock targetDate={targetDate} />
         </div>
     </div>

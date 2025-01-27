@@ -122,7 +122,7 @@ const FlipClock = () => {
   }, [targetDate]);
 
   return (
-    <div className="countdown">
+    <div className="countdown glowing-text">
       <div className="time-section" id="days">
         <div className="time-group">
           <div className="time-segment">
@@ -146,7 +146,9 @@ const FlipClock = () => {
             </div>
           </div>
         </div>
-        <p>Days</p>
+        <div>
+          <p>Days</p>
+        </div>
       </div>
 
       <div className="time-section" id="hours">
