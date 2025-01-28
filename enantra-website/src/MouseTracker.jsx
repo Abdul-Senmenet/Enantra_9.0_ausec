@@ -4,17 +4,16 @@ import './MouseTracker.css';
 const MouseTracker = () => {
     const circleSvg = useRef(null);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const [rotation, setRotation] = useState(0);  // To handle rotation
+    const [rotation, setRotation] = useState(0);
 
     useEffect(() => {
         const handleMouseMove = (event) => {
             setMousePosition({
-                x: event.clientX - 50,  // Adjusted to center the SVG
-                y: event.clientY - 50,  // Adjusted to center the SVG
+                x: event.pageX - 50,
+                y: event.pageY - 50,
             });
 
-            // Update the rotation based on mouse movement
-            setRotation((prevRotation) => prevRotation + 5);  // Rotate by 5 degrees with each movement
+            setRotation((prevRotation) => prevRotation + 5);
         };
 
         window.addEventListener('mousemove', handleMouseMove);
@@ -35,8 +34,8 @@ const MouseTracker = () => {
                 position: 'absolute',
                 top: `${mousePosition.y}px`,
                 left: `${mousePosition.x}px`,
-                transform: `rotate(${rotation}deg)`,  // Apply rotation here
-                transition: 'top 0.1s, left 0.1s, transform 0.1s',  // Smooth transition for rotation
+                transform: `rotate(${rotation}deg)`,
+                transition: 'top 0.1s, left 0.1s, transform 0.1s',
             }}
         >
             <title>Circular Text Path</title>
@@ -54,7 +53,7 @@ const MouseTracker = () => {
                     aria-label="All for One &amp; One for All"
                     textLength="942"
                 >
-                    ENANTRA 9.0 .
+                    0 AUSEC Enantra 9.
                 </textPath>
             </text>
         </svg>

@@ -6,6 +6,7 @@ import Aizen from './assets/aizen.jpg';
 import Erwin from './assets/erwin.jpg';
 import BlobAnimation from "./BlobAnimation";
 import MouseTracker from "./MouseTracker";
+// import Roller from "./Roller";
 
 const App = () => {
   // Set the target date (5 hours from now as an example)
@@ -23,6 +24,7 @@ const App = () => {
   return (
     <div>
         <BlobAnimation>
+            {/* <Slider /> */}
             <MouseTracker />
             <Test />
             <FlipClock targetDate={targetDate} />
